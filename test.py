@@ -18,13 +18,10 @@ def secretMessage(doc_url):
         grid_data = []
         for row_index, row in enumerate(rows[1:]):
             cells = row.find_all('td')
-            if len(cells) != 3:
-                print(f"Warning: Row {row_index + 1} has {len(cells)} cells, expected 3.")
-                continue
-
-            x_span = cells[0].find('span')  # Find any span within the first cell
-            char_span = cells[1].find('span')  # Find any span within the second cell
-            y_span = cells[2].find('span')  # Find any span within the third cell
+            
+            x_span = cells[0].find('span')  
+            char_span = cells[1].find('span')  
+            y_span = cells[2].find('span')  
 
             if not x_span:
                 print(f"Error: Could not find x-coordinate span in row {row_index + 1}.")
@@ -36,14 +33,12 @@ def secretMessage(doc_url):
                 print(f"Error: Could not find y-coordinate span in row {row_index + 1}.")
                 continue
 
-            try:
-                x = int(x_span.text)
-                char = char_span.text
-                y = int(y_span.text)
-                grid_data.append((x, y, char))
-            except ValueError as e:
-                print(f"Error: Could not convert value to int in row {row_index + 1}: {e}")
-                continue
+        
+            x = int(x_span.text)
+            char = char_span.text
+            y = int(y_span.text)
+            grid_data.append((x, y, char))
+       
 
         if not grid_data:
             print("No valid grid data found in the document.")
@@ -52,7 +47,7 @@ def secretMessage(doc_url):
         print("Grid data parsed:")
         print(grid_data)
 
-        max_x = max(x for x, y, char in grid_data) if grid_data else 0
+        max_x = max(x for x, y, char in grid_data) 
         max_y = max(y for x, y, char in grid_data) 
 
         grid = [[' ' for _ in range(max_x + 1)] for _ in range(max_y + 1)]
